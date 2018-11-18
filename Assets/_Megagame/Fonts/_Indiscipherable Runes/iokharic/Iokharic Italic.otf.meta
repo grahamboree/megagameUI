@@ -1,0 +1,25 @@
+fileFormatVersion: 2
+guid: f9317f7b554394985a973309147ffe95
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Iokharic
+  fontNames:
+  - Iokharic
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 0ea0b5b5362cf4c04bb6b25762de4ccf, type: 3}
+  - {fileID: 12800000, guid: 0df3ca07b594d415eafd79fc32078288, type: 3}
+  - {fileID: 12800000, guid: efe1aa4f3b8b140ad819cf1aff56c596, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
