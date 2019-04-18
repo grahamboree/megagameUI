@@ -1,82 +1,104 @@
 ﻿using System.Collections;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace _Megagame._Code.UI {
-	public class LoginController : MonoBehaviour {
-		[SerializeField] TMP_InputField InputField;
+public class LoginController : MonoBehaviour {
+	[SerializeField] TMP_InputField InputField;
 
-		const string startingText = "enter access code...";
+	[SerializeField] GameObject AccessDenied;
+	[SerializeField] 
 
-		void Start() {
-			InputField.onSubmit.AddListener(OnInputSubmitted);
-			ResetInputField();
-		}
+	const string startingText = "enter access code...";
 
-		void Update() {
-			bool removeStartingText = Input.anyKeyDown &&
-			                          !Input.GetMouseButtonDown(0) &&
-			                          !Input.GetMouseButtonDown(1) &&
-			                          InputField.text.StartsWith(startingText);
+	bool loggingIn = false;
 
-			if (removeStartingText) {
+	void Start() {
+		InputField.onSubmit.AddListener(OnInputSubmitted);
+		ResetInputField();
+	}
+
+	void Update() {
+		if (!loggingIn) {
+			if (Input.anyKeyDown && InputField.text.StartsWith(startingText)) {
 				var text = InputField.text.Remove(0, startingText.Length);
 				InputField.contentType = TMP_InputField.ContentType.Password;
 				InputField.text = text; // after we switch, so it updates the first letter
 			}
 
 			if (!InputField.isFocused) {
-				FocusInputField();
+				StartCoroutine(FocusInputField());
 			}
 		}
+	}
 
-		void OnDestroy() {
-			InputField.onSubmit.RemoveListener(OnInputSubmitted);
+	void OnDestroy() {
+		InputField.onSubmit.RemoveListener(OnInputSubmitted);
+	}
+
+	void ResetInputField() {
+		InputField.text = startingText;
+		InputField.contentType = TMP_InputField.ContentType.Standard;
+
+		StartCoroutine(FocusInputField());
+	}
+
+	void OnInputSubmitted(string text) {
+		StartCoroutine(AttemptingLogin());
+	}
+
+	IEnumerator FocusInputField() {
+		InputField.Select();
+		InputField.ActivateInputField();
+		yield return null;
+		InputField.MoveTextEnd(false);
+	}
+
+	IEnumerator AttemptingLogin() {
+		loggingIn = true;
+		var accessCode = InputField.text;
+		Debug.Log("Got Access Code: " + accessCode);
+
+		InputField.text = "";
+		yield return null;
+
+		var inputSystem = FindObjectOfType<EventSystem>();
+		inputSystem.gameObject.SetActive(false);
+
+		yield return new WaitForSeconds(0.2f);
+
+		inputSystem.gameObject.SetActive(true);
+
+		bool passwordValid = accessCode == "banana";
+		if (!passwordValid) {
+			AccessDenied.gameObject.SetActive(true);
+			AccessDenied.transform.DOScaleY(0, 0.2f).From();
+
+			var accessDeniedText = AccessDenied.GetComponentInChildren<TextMeshProUGUI>();
+
+			for (int i = 0; i < 3; ++i) {
+				accessDeniedText.enabled = false;
+				yield return new WaitForSeconds(0.2f);
+				accessDeniedText.enabled = true;
+				yield return new WaitForSeconds(0.2f);
+			}
+			accessDeniedText.enabled = false;
+
+			AccessDenied.transform.DOScaleY(0, 0.2f);
+			yield return new WaitForSeconds(0.2f);
+
+			// Reset and disable
+			AccessDenied.transform.localScale = Vector3.one;
+			accessDeniedText.enabled = true;
+			AccessDenied.gameObject.SetActive(false);
+		} else {
+
 		}
 
-		void ResetInputField() {
-			InputField.text = startingText;
-			InputField.contentType = TMP_InputField.ContentType.Standard;
+		yield return null;
 
-			FocusInputField();
-		}
-
-		void OnInputSubmitted(string text) {
-			StartCoroutine(AttemptingLogin());
-		}
-
-		void FocusInputField() {
-			StartCoroutine(FocusingInputField());
-		}
-
-		IEnumerator FocusingInputField() {
-			InputField.Select();
-			InputField.ActivateInputField();
-			yield return null;
-			InputField.MoveTextEnd(false);
-		}
-
-		IEnumerator AttemptingLogin() {
-			var accessCode = InputField.text;
-			var anim = GetComponent<Animator>();
-			Debug.Log("Got Access Code: " + accessCode);
-
-			anim.SetTrigger("next"); // to "Checking password"
-
-			InputField.text = "";
-
-			var inputSystem = FindObjectOfType<EventSystem>();
-			inputSystem.gameObject.SetActive(false);
-
-			yield return new WaitForSeconds(0.5f);
-
-			inputSystem.gameObject.SetActive(true);
-
-			bool passwordValid = InputField.text == "banana";
-
-			anim.SetTrigger("next"); // to "Access Denied"
-			anim.SetBool("password_valid", passwordValid);
-		}
+		ResetInputField();
+		loggingIn = false;
 	}
 }
