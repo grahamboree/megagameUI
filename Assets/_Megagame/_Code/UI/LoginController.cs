@@ -3,14 +3,18 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LoginController : MonoBehaviour {
 	[SerializeField] TMP_InputField InputField;
-
 	[SerializeField] GameObject AccessDenied;
-	[SerializeField] 
+	[SerializeField] Camera Camera;
+	[SerializeField] CanvasGroup LoginItems;
+	[SerializeField] Image Overlay;
 
 	const string startingText = "enter access code...";
+	const float successfulLoginFadeTime = 5;
 
 	bool loggingIn = false;
 
@@ -57,7 +61,7 @@ public class LoginController : MonoBehaviour {
 
 	IEnumerator AttemptingLogin() {
 		loggingIn = true;
-		var accessCode = InputField.text;
+		var accessCode = InputField.text.Trim().ToLowerInvariant();
 		Debug.Log("Got Access Code: " + accessCode);
 
 		InputField.text = "";
@@ -70,7 +74,7 @@ public class LoginController : MonoBehaviour {
 
 		inputSystem.gameObject.SetActive(true);
 
-		bool passwordValid = accessCode == "banana";
+		bool passwordValid = DataManager.Instance.Data.ContainsKey(accessCode);
 		if (!passwordValid) {
 			AccessDenied.gameObject.SetActive(true);
 			AccessDenied.transform.DOScaleY(0, 0.2f).From();
@@ -93,7 +97,20 @@ public class LoginController : MonoBehaviour {
 			accessDeniedText.enabled = true;
 			AccessDenied.gameObject.SetActive(false);
 		} else {
+			CurrentSession.Instance.ClearCurrentSession();
+			CurrentSession.Instance.AccessKey = accessCode;
 
+			LoginItems.DOFade(0, 0.5f);
+
+			Camera.transform.DOMove(new Vector3(0, 0, -3f), successfulLoginFadeTime);
+
+			Overlay.DOFade(1, successfulLoginFadeTime / 2f)
+				.SetDelay(successfulLoginFadeTime / 4f)
+				.SetEase(Ease.InExpo);
+
+			yield return new WaitForSeconds(successfulLoginFadeTime);
+
+			SceneManager.LoadScene("Data", LoadSceneMode.Single);
 		}
 
 		yield return null;
