@@ -22,11 +22,11 @@ public class DataManager : MonoBehaviour {
 	void Update() {
 		if (Time.unscaledTime >= nextUpdateTime) {
 			nextUpdateTime = Time.unscaledTime + updateInterval;
-			StartCoroutine(DownloadGoogleSheet());
+			StartCoroutine(DownloadGoogleSheetTSV());
 		}
 	}
 
-	IEnumerator DownloadGoogleSheet() {
+	IEnumerator DownloadGoogleSheetTSV() {
 		var www = UnityWebRequest.Get(spreadsheetURL);
 		yield return www.SendWebRequest();
 		var spreadsheet = www.downloadHandler.text;

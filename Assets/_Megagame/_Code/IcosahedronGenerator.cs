@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#if UNITY_EDITOR
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -70,7 +71,7 @@ public static class Icosahedron {
 				9, 8, 1
 			}
 		};
-		
+
 		// refine triangles
 		for (int i = 0; i < subdivisions; i++) {
 			icosahedron = Subdivide(icosahedron);
@@ -127,3 +128,4 @@ public class IcosahedronGenerator : EditorWindow {
 		}
 	}
 }
+#endif
