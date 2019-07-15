@@ -1401,13 +1401,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1788226709}
-    characterCount: 0
+    characterCount: 6
     spriteCount: 0
     spaceCount: 0
-    wordCount: 0
+    wordCount: 3
     linkCount: 0
-    lineCount: 0
-    pageCount: 0
+    lineCount: 1
+    pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
@@ -1513,6 +1513,7 @@ GameObject:
   - component: {fileID: 1899258073}
   - component: {fileID: 1899258077}
   - component: {fileID: 1899258076}
+  - component: {fileID: 1899258078}
   m_Layer: 8
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1693,6 +1694,35 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   priority: 9999
+--- !u!114 &1899258078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1899258070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66648ce0a818f40b0a28e72d3234b40c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  analog: {fileID: 1899258072}
+  digital: {fileID: 1899258076}
+  JitterSpeed: 2
+  JitterIntensity: 3.5
+  JitterOffset: -2.25
+  ColorSpeed: 2
+  ColorIntensity: 1
+  ColorOffset: -0.7
+  HShakeSpeed: 2
+  HShakeIntensity: 1
+  HShakeOffset: -0.8
+  VJumpSpeed: 0
+  VJumpIntensity: 0
+  VJumpOffset: 0
+  DigitalSpeed: 2
+  DigitalIntensity: 0.1
+  DigitalOffset: -0.07
 --- !u!1 &1964186294
 GameObject:
   m_ObjectHideFlags: 0
@@ -1801,13 +1831,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1964186295}
-    characterCount: 0
+    characterCount: 1
     spriteCount: 0
     spaceCount: 0
-    wordCount: 0
+    wordCount: 1
     linkCount: 0
-    lineCount: 0
-    pageCount: 0
+    lineCount: 1
+    pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0

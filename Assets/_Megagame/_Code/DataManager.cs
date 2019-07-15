@@ -1,19 +1,29 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
+using System.Text.RegularExpressions;
+using NReco.Csv;
 using UnityEngine;
 using UnityEngine.Networking;
 
+public class DataEntry {
+	public string Name;
+	public string Description;
+}
+
 public class DataManager : MonoBehaviour {
 	public static DataManager Instance;
-
-	const string spreadsheetURL = "https://docs.google.com/spreadsheets/d/1g88q39eU_w5V6V03h5SSqBDth2AQO9hIFWpS0KM7tDI/export?format=tsv";
-
 	public Dictionary<string, List<DataEntry>> Data = new Dictionary<string, List<DataEntry>>();
 
-	float nextUpdateTime = 0f;
+	//////////////////////////////////////////////////
+
+	const string spreadsheetCSV = "https://docs.google.com/spreadsheets/d/1g88q39eU_w5V6V03h5SSqBDth2AQO9hIFWpS0KM7tDI/export?format=csv";
+
+	float nextUpdateTime;
 	float updateInterval = 999990;
+
+	//////////////////////////////////////////////////
 
 	void Awake() {
 		Instance = this;
@@ -22,56 +32,86 @@ public class DataManager : MonoBehaviour {
 	void Update() {
 		if (Time.unscaledTime >= nextUpdateTime) {
 			nextUpdateTime = Time.unscaledTime + updateInterval;
-			StartCoroutine(DownloadGoogleSheetTSV());
+			StartCoroutine(DownloadGoogleSheet(spreadsheetCSV));
 		}
 	}
 
-	IEnumerator DownloadGoogleSheetTSV() {
-		var www = UnityWebRequest.Get(spreadsheetURL);
+	IEnumerator DownloadGoogleSheet(string url) {
+		var www = UnityWebRequest.Get(url);
 		yield return www.SendWebRequest();
 		var spreadsheet = www.downloadHandler.text;
-		UpdateWithSpreadsheet(spreadsheet);
+		UpdateWithCSV(spreadsheet);
 	}
 
-	void UpdateWithSpreadsheet(string spreadsheet) {
-		var lines = spreadsheet.Split('\n');
-
+	void UpdateWithCSV(string csv) {
 		Data.Clear();
 
-		// Parse header and extract keys:
-		var users = new List<string>();
-		var headerCells = lines[0].Split('\t');
-		for (int colIndex = 2; colIndex < headerCells.Length; ++colIndex) {
-			var user = headerCells[colIndex].Trim().ToLowerInvariant();
-			users.Add(user);
-			Data[user] = new List<DataEntry>();
-		}
+		using (var streamRdr = new StringReader(csv)) {
+			var csvReader = new CsvReader(streamRdr, ",");
 
-		Debug.Log("Got users: " + string.Join(", ", users.ToArray()));
+			bool isHeader = true;
+			var users = new List<string>();
 
-		// Skip first line, because it's header.
-		foreach (var line in lines.Skip(1)) {
-			var cells = line.Split('\t');
+			while (csvReader.Read()) {
+				if (isHeader) { // Parse header and extract keys:
+					isHeader = false;
 
-			var dataEntry = new DataEntry(cells);
+					for (int colIndex = 2; colIndex < csvReader.FieldsCount; ++colIndex) {
+						var user = csvReader[colIndex].Trim().ToLowerInvariant();
+						users.Add(user);
+						Data[user] = new List<DataEntry>();
+					}
 
-			// Add data entry to access list for all users.
-			for (int colIndex = 2; colIndex < cells.Length; ++colIndex) {
-				if (cells[colIndex].Trim().Equals("true", StringComparison.OrdinalIgnoreCase)) {
-					var user = users[colIndex - 2];
-					Data[user].Add(dataEntry);
+					Debug.Log("Got users: " + string.Join(", ", users.ToArray()));
+				} else {
+					var dataEntry = new DataEntry {
+						Name = csvReader[0],
+						Description = DressUpDescription(csvReader[1])
+					};
+
+					// Add data entry to access list for all users.
+					for (int colIndex = 2; colIndex < csvReader.FieldsCount; ++colIndex) {
+						if (csvReader[colIndex].Trim().Equals("true", StringComparison.OrdinalIgnoreCase)) {
+							var user = users[colIndex - 2];
+							Data[user].Add(dataEntry);
+						}
+					}
 				}
 			}
 		}
 	}
-}
 
-public class DataEntry {
-	public string Name;
-	public string Description;
-
-	public DataEntry(string[] cells) {
-		Name = cells[0];
-		Description = cells[1];
+	string DressUpDescription(string description) {
+		description = Regex.Replace(
+			description,
+			@"Designation:",
+			"<uppercase><color #F3F3DB><size=+5>Designation:</size></color></uppercase>",
+			RegexOptions.IgnoreCase);
+		description = Regex.Replace(
+			description,
+			@"Subject:",
+			"<uppercase><color #F3F3DB><size=+5>Subject:</size></color></uppercase>",
+			RegexOptions.IgnoreCase);
+		description = Regex.Replace(
+			description,
+			@"Procedure:",
+			"<uppercase><color #F3F3DB><size=+5>Procedure:</size></color></uppercase>",
+			RegexOptions.IgnoreCase);
+		description = Regex.Replace(
+			description,
+			@"Properties:",
+			"<uppercase><color #F3F3DB><size=+5>Properties:</size></color></uppercase>",
+			RegexOptions.IgnoreCase);
+		description = Regex.Replace(
+			description,
+			@"Findings:",
+			"<uppercase><color #F3F3DB><size=+5>Findings:</size></color></uppercase>",
+			RegexOptions.IgnoreCase);
+		description = Regex.Replace(
+			description,
+			@"Ongoing:",
+			"<uppercase><color #F3F3DB><size=+5>Ongoing:</size></color></uppercase>",
+			RegexOptions.IgnoreCase);
+		return description;
 	}
 }
