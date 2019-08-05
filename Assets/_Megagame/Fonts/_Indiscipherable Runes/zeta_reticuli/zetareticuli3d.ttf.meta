@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: efe92dc2582af45e4a721fd7d2890a53
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Zeta Reticuli 3D
+  fontNames:
+  - Zeta Reticuli 3D
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 44f3b9558d6e0491fb5afb715d2280d2, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 98aa451f059214ad9a4ddbcd27f48cd8
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Zeta Reticuli Italic
+  fontNames:
+  - Zeta Reticuli Italic
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 8656a13454aeb496cb91ff9bd37f71eb, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

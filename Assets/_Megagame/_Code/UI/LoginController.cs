@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using DG.Tweening;
+using Kino;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -103,14 +104,25 @@ public class LoginController : MonoBehaviour {
 			LoginItems.DOFade(0, 0.5f);
 
 			Camera.transform.DOMove(new Vector3(0, 0, -3f), successfulLoginFadeTime);
+			FindObjectOfType<GlitchController>().enabled = false;
+//			FindObjectOfType<DigitalGlitch>().enabled = false;
+			FindObjectOfType<AnalogGlitch>().enabled = false;
+
+			var glitch = FindObjectOfType<DigitalGlitch>();
+			DOTween.To(
+				() => glitch.intensity,
+				x => glitch.intensity = x,
+				1,
+				3)
+				.SetDelay(successfulLoginFadeTime - 3);
 
 			Overlay.DOFade(1, successfulLoginFadeTime / 2f)
-				.SetDelay(successfulLoginFadeTime / 4f)
+				.SetDelay(successfulLoginFadeTime / 2f)
 				.SetEase(Ease.InExpo);
 
 			yield return new WaitForSeconds(successfulLoginFadeTime);
 
-			SceneManager.LoadScene("Data", LoadSceneMode.Single);
+			SceneManager.LoadScene("Startup Sequence", LoadSceneMode.Single);
 		}
 
 		yield return null;

@@ -21,7 +21,8 @@ public class TextTyper : MonoBehaviour {
 	float nextCharTime = 0;
 
 	void Start() {
-		GetComponent<TextMeshProUGUI>().text = "";
+		var startingText = GetComponent<TextMeshProUGUI>().text;
+		SetString(startingText);
 	}
 
 	void Update() {

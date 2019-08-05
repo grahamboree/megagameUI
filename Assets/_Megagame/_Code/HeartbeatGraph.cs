@@ -1,0 +1,69 @@
+using System;
+using System.Collections.Generic;
+using Vectrosity;
+using UnityEngine;
+using UnityEngine.Serialization;
+
+public class HeartbeatGraph : MonoBehaviour {
+    [SerializeField] RectTransform Container;
+    [SerializeField] int numSamples = 20;
+
+    [Header("Scrolling")]
+    [FormerlySerializedAs("scrollSpeed")]
+    [SerializeField] float XScrollSpeed = 0.01f;
+    [SerializeField] float YScrollSpeed = 0f;
+
+    [Header("Noise")]
+    [SerializeField] float xResolution = 0.1f;
+    [SerializeField] float yOffset = 0f;
+    [SerializeField] int octaves = 4;
+    [SerializeField] float persistence = 0.1f;
+
+    VectorLine line;
+
+    void Start() {
+        line = new VectorLine("graph", new List<Vector3>(), 1.0f) {
+            lineType = LineType.Continuous
+        };
+    }
+
+    void Update() {
+        var corners = new Vector3[4];
+        Container.GetWorldCorners(corners);
+
+        float deltaX = corners[2].x - corners[0].x;
+        float deltaY = corners[1].y - corners[0].y;
+
+        float xIncrement = deltaX / numSamples;
+
+        line.points3.Clear();
+        for (int i = 0; i <= numSamples; ++i) {
+            line.points3.Add(corners[0] + new Vector3(i * xIncrement, noiseValue(i) * deltaY, 0));
+        }
+
+        line.Draw3D();
+    }
+
+    float noiseValue(int sampleNum) {
+        float x = Time.unscaledTime * XScrollSpeed + xResolution * ((float) sampleNum / numSamples);
+        float y = Time.unscaledTime * YScrollSpeed + yOffset;
+
+        float sin = Mathf.Sin(x);
+        sin = Mathf.Clamp01(sin);
+
+        float total = 0;
+        float frequency = 1;
+        float amplitude = 1;
+        float maxValue = 0; // Used for normalizing result to 0.0 - 1.0
+        for (int i = 0; i < octaves; i++) {
+            total += Mathf.PerlinNoise(x * frequency, y * frequency) * amplitude * sin;
+
+            maxValue += amplitude;
+
+            amplitude *= persistence;
+            frequency *= 2;
+        }
+
+        return total / maxValue;
+    }
+}

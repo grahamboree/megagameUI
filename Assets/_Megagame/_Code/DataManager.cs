@@ -81,37 +81,40 @@ public class DataManager : MonoBehaviour {
 		}
 	}
 
+	const string HIGHLIGHT_COLOR = "F15152";
+
 	string DressUpDescription(string description) {
 		description = Regex.Replace(
 			description,
 			@"Designation:",
-			"<uppercase><color #F3F3DB><size=+5>Designation:</size></color></uppercase>",
+			"<uppercase><color #" + HIGHLIGHT_COLOR + "><size=+5>Designation:</size></color></uppercase>",
 			RegexOptions.IgnoreCase);
 		description = Regex.Replace(
 			description,
 			@"Subject:",
-			"<uppercase><color #F3F3DB><size=+5>Subject:</size></color></uppercase>",
+			"<uppercase><color #" + HIGHLIGHT_COLOR + "><size=+5>Subject:</size></color></uppercase>",
 			RegexOptions.IgnoreCase);
 		description = Regex.Replace(
 			description,
 			@"Procedure:",
-			"<uppercase><color #F3F3DB><size=+5>Procedure:</size></color></uppercase>",
+			"<uppercase><color #" + HIGHLIGHT_COLOR + "><size=+5>Procedure:</size></color></uppercase>",
 			RegexOptions.IgnoreCase);
 		description = Regex.Replace(
 			description,
 			@"Properties:",
-			"<uppercase><color #F3F3DB><size=+5>Properties:</size></color></uppercase>",
+			"<uppercase><color #" + HIGHLIGHT_COLOR + "><size=+5>Properties:</size></color></uppercase>",
 			RegexOptions.IgnoreCase);
 		description = Regex.Replace(
 			description,
 			@"Findings:",
-			"<uppercase><color #F3F3DB><size=+5>Findings:</size></color></uppercase>",
+			"<uppercase><color #" + HIGHLIGHT_COLOR + "><size=+5>Findings:</size></color></uppercase>",
 			RegexOptions.IgnoreCase);
 		description = Regex.Replace(
 			description,
 			@"Ongoing:",
-			"<uppercase><color #F3F3DB><size=+5>Ongoing:</size></color></uppercase>",
+			"<uppercase><color #" + HIGHLIGHT_COLOR + "><size=+5>Ongoing:</size></color></uppercase>",
 			RegexOptions.IgnoreCase);
-		return description;
+
+		return description.Replace("\t", "    ");
 	}
 }

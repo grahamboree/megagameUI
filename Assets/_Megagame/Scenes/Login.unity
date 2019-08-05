@@ -1072,10 +1072,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SecondsPerRotation: 40
-  NoiseMagnitude: 0.4
+  NoiseMagnitude: -0.4
   NoiseFrequency: 3
   NoiseSpeed: 0.5
-  NoiseThreshold: -0.2
+  NoiseThreshold: -0.5
 --- !u!23 &1533382376
 MeshRenderer:
   m_ObjectHideFlags: 0

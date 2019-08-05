@@ -3,12 +3,13 @@ using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter))]
 public class SphereDistortion : MonoBehaviour {
-	[SerializeField] float SecondsPerRotation = 3f;
+	public float SecondsPerRotation = 3f;
 
-	[Header("Noise")] [SerializeField] float NoiseMagnitude = 0.5f;
-	[SerializeField] float NoiseFrequency = 1f;
-	[SerializeField] float NoiseSpeed = 1f;
-	[SerializeField] float NoiseThreshold = 0.75f;
+	[Header("Noise")]
+	public float NoiseMagnitude = 0.5f;
+	public float NoiseFrequency = 1f;
+	public float NoiseSpeed = 1f;
+	public float NoiseThreshold = 0.75f;
 
 	//////////////////////////////////////////////////
 
