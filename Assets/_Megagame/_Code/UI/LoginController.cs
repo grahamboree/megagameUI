@@ -122,7 +122,7 @@ public class LoginController : MonoBehaviour {
 
 			yield return new WaitForSeconds(successfulLoginFadeTime);
 
-			SceneManager.LoadScene("Startup Sequence", LoadSceneMode.Single);
+			SceneManager.LoadScene("Booting", LoadSceneMode.Single);
 		}
 
 		yield return null;

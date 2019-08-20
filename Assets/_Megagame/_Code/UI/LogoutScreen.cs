@@ -41,14 +41,14 @@ public class LogoutScreen : MonoBehaviour {
         AutoRestartText.enabled = true;
 
         string tip = messages[Random.Range(0, messages.Length)];
-        ReminderText.text = "<size=+10><color=white>Successfully logged out.</size>\n\n\n\n\nRemember:</color>\n\n<size=+30>" + tip;
+        ReminderText.text = "<size=+10><color=white>Logged out</size></color>\n\n\n\n\n\n\n<size=+30>" + tip;
 
         float restartTime = Time.time + 10;
         while (Time.time < restartTime) {
             float timeLeft = restartTime - Time.time;
             float fpart = timeLeft - Mathf.Floor(timeLeft);
 
-            string autoRestartText = "System restart commencing in " + Mathf.Ceil(timeLeft);
+            string autoRestartText = "System shutdown commencing in " + Mathf.Ceil(timeLeft);
 
             if (fpart < 0.25f) {
                 autoRestartText += "...";

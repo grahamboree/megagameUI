@@ -15,7 +15,7 @@ public class CurrentSession : MonoBehaviour {
 	}
 
 	void Update() {
-		if (Input.GetKeyDown(KeyCode.Escape)) {
+		if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.RightShift) && Input.GetKeyDown(KeyCode.X)) {
 			if (string.IsNullOrEmpty(AccessKey)) {
 				Application.Quit();
 			} else {

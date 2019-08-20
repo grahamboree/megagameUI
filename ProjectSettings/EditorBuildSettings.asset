@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/_Megagame/Scenes/Login.unity
     guid: 186863a5292fbf64bb323a1ff9351840
   - enabled: 1
+    path: Assets/_Megagame/Scenes/Booting.unity
+    guid: 1ae52792c62a9417f90e17aa3c952ad0
+  - enabled: 1
     path: Assets/_Megagame/Scenes/Startup Sequence.unity
     guid: 6e716ef75e0714a33bf9b27f90c88a0b
   - enabled: 1
